@@ -1,0 +1,28 @@
+server:
+  port: 8001
+  servlet:
+    context-path: /redis
+
+spring:
+  redis:
+    host: 192.168.255.164
+    port: 6379
+    password: Sicmed_123
+    # redis 数据库索引
+    database: 4
+    lettuce:
+      pool:
+        max-active: 15
+        max-idle: 10
+        min-idle: 1
+        max-wait: -1
+      shutdown-timeout: 100
+    timeout: 2000
+
+redis:
+  cache:
+    database: 8
+  session:
+    database: 8
+  token:
+    expireTime: 7
