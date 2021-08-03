@@ -1,15 +1,13 @@
-package com.maven.study.common.redis.util;
+package com.maven.study.common.redis.common.util;
 
 import org.springframework.data.domain.Range;
+import org.springframework.data.redis.connection.BitFieldSubCommands;
 import org.springframework.data.redis.connection.RedisStringCommands;
-import org.springframework.data.redis.connection.SortParameters;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @program: study
@@ -104,9 +102,22 @@ public class RedisStringsBitMapUtil {
         return index;
     }
 
+    /**
+     * @description: 二进制逻辑操作
+     * @param: bitOperation  逻辑运算规则 与AND, 或OR, 异或XOR, 非NOT;
+     * @param: newKey  生成新的key
+     * @param: keys  参与逻辑运算的数据
+     * @return: java.lang.Long
+    */
     public Long getBitOp(RedisStringCommands.BitOperation bitOperation, String newKey, byte[]... keys){
         byte[] newKeyBytes = newKey.getBytes();
-        Object object = redisTemplate.execute((RedisCallback<Object>) connection -> connection.bitOp(bitOperation, newKeyBytes, keys));
+        Long statusLength = (Long) redisTemplate.execute((RedisCallback<Object>) connection -> connection.bitOp(bitOperation, newKeyBytes, keys));
+        return statusLength;
+    }
+
+    public Long bitField(RedisStringCommands.BitOperation bitOperation, String newKey, byte[]... keys){
+        byte[] newKeyBytes = newKey.getBytes();
+        Object object = redisTemplate.execute((RedisCallback<Object>) connection -> connection.bitField(newKeyBytes, BitFieldSubCommands.create()));
         System.out.println(object);
         return null;
     }
